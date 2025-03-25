@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ticket Booking</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Ticket Booking</h1>
+
+        <!-- Form to book tickets -->
+       <form th:action="@{/bookings}" th:object="${ticketBooking}" method="post" class="card p-4">
+    <div class="mb-3">
+        <label for="movies" class="form-label">Movies</label>
+        <select th:field="*{movie.id}" class="form-select" id="movies">
+            <option th:each="movie : ${movies}" th:value="${movie.id}" th:text="${movie.title}"></option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="showtime" class="form-label">Showtime</label>
+        <select th:field="*{showtime.id}" class="form-select" id="showtime">
+            <option th:each="showtime : ${showtimes}" th:value="${showtime.id}" th:text="${showtime.movie.title} + ' - ' + ${showtime.showtime}"></option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="numberOfTickets" class="form-label">Number of Tickets</label>
+        <input type="number" th:field="*{numberOfTickets}" class="form-control" id="numberOfTickets" placeholder="Enter number of tickets">
+    </div>
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary">Book Tickets</button>
+    </div>
+</form>
+
+        <!-- Booking confirmation -->
+        <div class="mt-4" th:if="${bookingConfirmation}">
+            <div class="alert alert-success">
+                <strong>Booking Successful!</strong> 
+                <span th:text="${ticketBooking.numberOfTickets}"></span> ticket(s) booked for 
+                <span th:text="${ticketBooking.showtime.movie.title}"></span> at 
+                <span th:text="${ticketBooking.showtime.showtime}"></span>.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
